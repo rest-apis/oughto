@@ -1,0 +1,6 @@
+#Ejemplo de tastypie
+
+Inspirado en <http://joshbohde.com/blog/backbonejs-and-django>
+
+* TODO normal: poder crear, borrar, marcar como completa (POST, DELETE, PUT)
+* Clon de thingler: asignarle una uuid en cuanto entre y redirigir allí
