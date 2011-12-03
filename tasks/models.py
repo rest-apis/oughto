@@ -8,3 +8,10 @@ class Task(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('task', [self.pk])
+
+    def as_json(self):
+        return dict(
+                content = self.content,
+                complete = self.complete,
+                created_at = str(self.created_at)
+                )

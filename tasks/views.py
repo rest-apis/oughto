@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from tasks.models import Task
+from django.shortcuts import get_object_or_404
 import json
 
 def _collection(request):
@@ -9,13 +10,13 @@ def _collection(request):
         return create(request)
 
 def _member(request, task_id):
-    #TODO: do something with the task_id
+    task = get_object_or_404(Task, pk = task_id)
     if request.method == 'GET':
-        return show(request)
+        return show(request, task)
     elif request.method == 'PUT':
-        return update(request)
+        return update(request, task)
     elif request.method == 'DELETE':
-        return destroy(request)
+        return destroy(request, task)
 
 def index(request):
     tasks = Task.objects.all()
@@ -25,21 +26,28 @@ def index(request):
     elif accepts == "application/json" :
         response = json.dumps({
             'tasks': [
-                dict(content = task.content, complete = task.complete, created= str(task.created_at))
+                task.as_json()
                 for task in tasks
                 ]})
     else:
         return HttpResponse(status = 406)
     return HttpResponse(response, content_type = accepts)
 
-def show(request):
-    return HttpResponse("To show a single task")
+def show(request, task):
+    return HttpResponse(json.dumps(task.as_json()), content_type = "application/json")
 
 def create(request):
-    return HttpResponse("To create a task")
+    task = Task.objects.create(**request.POST)
+    return HttpResponse(json.dumps(task.as_json()), content_type = "application/json")
 
-def update(request):
-    return HttpResponse("To update a task")
+def update(request, task):
+    from cgi import parse_qs
+    data = parse_qs(request.raw_post_data)
+    print data
+    Task.objects.filter(pk = task.id).update(**data)
+    task = Task.objects.get(pk = task.id)
+    return HttpResponse(json.dumps(task.as_json()), content_type = "application/json")
 
-def destroy(request):
-    return HttpResponse("To destroy a task")
+def destroy(request, task):
+    task.delete()
+    return HttpResponse()
