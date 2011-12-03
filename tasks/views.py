@@ -4,7 +4,7 @@ from django.http import HttpResponse
 def new(request):
     return HttpResponse("To create stuff via web")
 
-def edit(request):
+def edit(request, task_id):
     return HttpResponse("To edit stuff via web")
 
 #RESTful views
