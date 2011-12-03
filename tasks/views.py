@@ -1,4 +1,6 @@
 from django.http import HttpResponse
+from tasks.models import Task
+import json
 
 def _collection(request):
     if request.method == 'GET':
@@ -16,7 +18,19 @@ def _member(request, task_id):
         return destroy(request)
 
 def index(request):
-    return HttpResponse("To view all tasks")
+    tasks = Task.objects.all()
+    accepts = request.META['HTTP_ACCEPT_ENCODING']
+    if accepts == "text/plain":
+        response = "\n".join([task.content for task in tasks])
+    elif accepts == "application/json" :
+        response = json.dumps({
+            'tasks': [
+                dict(content = task.content, complete = task.complete, created= str(task.created_at))
+                for task in tasks
+                ]})
+    else:
+        return HttpResponse(status = 406)
+    return HttpResponse(response, content_type = accepts)
 
 def show(request):
     return HttpResponse("To show a single task")
