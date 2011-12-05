@@ -13,5 +13,6 @@ class Task(models.Model):
         return dict(
                 content = self.content,
                 complete = self.complete,
-                created_at = str(self.created_at)
+                created_at = str(self.created_at),
+                id = self.pk
                 )

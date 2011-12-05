@@ -19,7 +19,7 @@ def _member(request, task_id):
         return destroy(request, task)
 
 def index(request):
-    tasks = Task.objects.all()
+    tasks = Task.objects.all().order_by('-pub_date')
     accepts = request.META['HTTP_ACCEPT_ENCODING']
     if accepts == "text/plain":
         response = "\n".join([task.content for task in tasks])
@@ -37,15 +37,16 @@ def show(request, task):
     return HttpResponse(json.dumps(task.as_json()), content_type = "application/json")
 
 def create(request):
-    task = Task.objects.create(**request.POST)
+    task = Task()
+    task.content = request.POST['content']
+    task.save()
     return HttpResponse(json.dumps(task.as_json()), content_type = "application/json")
 
 def update(request, task):
-    from cgi import parse_qs
-    data = parse_qs(request.raw_post_data)
-    print data
-    Task.objects.filter(pk = task.id).update(**data)
-    task = Task.objects.get(pk = task.id)
+    print request.REQUEST
+    task.content = request.REQUEST.get('content', [task.content,])[0]
+    task.complete = bool(request.REQUEST.get('complete', [task.complete,])[0])
+    task.save()
     return HttpResponse(json.dumps(task.as_json()), content_type = "application/json")
 
 def destroy(request, task):

@@ -10,8 +10,8 @@ import json
 class RestMiddleware(object):
     def process_request(self, request):
         if request.method == 'PUT':
-            request.REQUEST = parse_qs(request.raw_form_data)
+            request.POST = parse_qs(request.raw_post_data)
         if request.META['CONTENT_TYPE'] == 'application/json':
-            request.REQUEST = json.loads(request.raw_form_data)
+            request.POST = json.loads(request.raw_post_data)
 
 
