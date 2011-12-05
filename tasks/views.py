@@ -1,12 +1,5 @@
 from django.http import HttpResponse
 
-#Non-RESTful views
-def new(request):
-    return HttpResponse("To create stuff via web")
-
-def edit(request, task_id):
-    return HttpResponse("To edit stuff via web")
-
 #RESTful views
 def _collection(request):
     if request.method == 'GET':
