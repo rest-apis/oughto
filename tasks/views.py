@@ -19,8 +19,8 @@ def _member(request, task_id):
         return destroy(request, task)
 
 def index(request):
-    tasks = Task.objects.all().order_by('-pub_date')
-    accepts = request.META['HTTP_ACCEPT_ENCODING']
+    tasks = Task.objects.all().order_by('-created_at')
+    accepts = request.META['HTTP_ACCEPT']
     if accepts == "text/plain":
         response = "\n".join([task.content for task in tasks])
     elif accepts == "application/json" :
