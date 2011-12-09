@@ -15,7 +15,7 @@
   <script src= "{{STATIC_URL}}javascripts/tasks.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/template" id="task-template">
-   <div id="<%= id %>" class="task">
+   <div id="task_<%= id %>" class="task">
        <input type="checkbox" <%=  complete ? "checked" : ""  %> >
        <%= content %>
        <a href="#delete" data-id="<%= id %>" > Eliminar </a>
@@ -24,6 +24,6 @@
 </head>
 <body>
     <h1>Tareas por hacer</h1>
-    <input type="text" placeholder="Agregar nueva tarea" />
+    <input id ="task-input" type="text" placeholder="Agregar nueva tarea" />
     <ul id="task-list"></ul>
 </body>
