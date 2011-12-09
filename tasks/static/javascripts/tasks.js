@@ -21,12 +21,12 @@ Tasks = {
             $("#task-list").prepend("<li>"+task_template(task)+"</li>")
         });
     }
-    ,delete: function(id){
+    ,destroy: function(id){
         $.ajax({
              url: '/tasks/'+id
             ,type: "DELETE"
             ,success: function(){
-                $("#task_"+id).remove();
+                $("#task_"+id).closest("li").remove();
             }
         });
     }
@@ -47,4 +47,12 @@ $(function(){
            Tasks.create(value);
         }
     });
+
+
+    //para cuando se quiera eliminar una tarea
+    $(".delete-task").live('click', function(e){
+        e.preventDefault();
+        var id = $(this).data("id");
+        Tasks.destroy(id);
+    })
 });
