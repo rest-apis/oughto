@@ -23,7 +23,7 @@ def index(request):
     accepts = request.META['HTTP_ACCEPT']
     if accepts == "text/plain":
         response = "\n".join([task.content for task in tasks])
-    elif accepts == "application/json" :
+    elif "application/json" in accepts :
         response = json.dumps({
             'tasks': [
                 task.as_json()
