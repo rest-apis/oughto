@@ -54,5 +54,9 @@ $(function(){
         e.preventDefault();
         var id = $(this).data("id");
         Tasks.destroy(id);
-    })
+    });
+    
+    $(".complete-task").live('click', function(e){
+        Tasks.complete($(this).data('id'),$(this).is(":checked"));
+    });
 });

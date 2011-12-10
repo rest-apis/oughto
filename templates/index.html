@@ -16,7 +16,7 @@
 
   <script type="text/template" id="task-template">
    <div id="task_<%= id %>" class="task">
-       <input type="checkbox" <%=  complete ? "checked" : ""  %> >
+       <input data-id= "<%= id %>" class="complete-task" type="checkbox" <%=  complete ? "checked" : ""  %> >
        <%= content %>
        <a href="#delete" data-id="<%= id %>" class="delete-task" > Eliminar </a>
     </div>

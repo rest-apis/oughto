@@ -43,9 +43,8 @@ def create(request):
     return HttpResponse(json.dumps(task.as_json()), content_type = "application/json")
 
 def update(request, task):
-    print request.REQUEST
     task.content = request.REQUEST.get('content', [task.content,])[0]
-    task.complete = bool(request.REQUEST.get('complete', [task.complete,])[0])
+    task.complete = request.REQUEST.get('complete', [task.complete,])[0] == "true"
     task.save()
     return HttpResponse(json.dumps(task.as_json()), content_type = "application/json")
 
